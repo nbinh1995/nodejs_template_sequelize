@@ -1,4 +1,7 @@
 'use strict';
+const {statusAuth} = require('../config/var.config');
+const bcrypt = require('bcryptjs');
+const salt  = bcrypt.genSaltSync(10);
 const {
   Model
 } = require('sequelize');
@@ -12,12 +15,32 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
-    
+    static async attempt({email ,password}) {
+        const auth =await this.findOne({ where: { email: email} });
+        if(auth instanceof User){
+          const passwordIsValid = bcrypt.compareSync(
+            password,
+            auth.password
+          );
+          if(passwordIsValid){
+            return auth;
+          }else{
+            return statusAuth[1];
+          }
+          
+        }else{
+          return statusAuth[0];
+        }
+    }
   };
   User.init({
     name: DataTypes.STRING,
     email: DataTypes.STRING,
-    password: DataTypes.STRING,
+    password: {type:DataTypes.STRING,
+      set(value) {
+        this.setDataValue('password',bcrypt.hashSync(value, salt));
+      },
+    },
     gender: DataTypes.ENUM('male', 'female'),
     dob: DataTypes.DATE,
     createdAt: DataTypes.DATE,
@@ -28,3 +51,4 @@ module.exports = (sequelize, DataTypes) => {
   });
   return User;
 };
+

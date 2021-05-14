@@ -1,6 +1,9 @@
 const db = require('../models/index');
 const UserModel = db.sequelize.models.User;
 const bcrypt = require('bcryptjs');
+const salt  = bcrypt.genSaltSync(10);
+const moment = require('moment');
+
 class UserController{
 
     static list = async (req, res) => {
@@ -38,8 +41,9 @@ class UserController{
     };
     
     static store = async (req, res) => {
-        let data = { name, email, password , gender , dob } = req.body;
-        data.password = bcrypt.hashSync(data.password, 8);
+        let { name, email, password , gender , dob } = req.body;
+        let data = { name, email, password , gender , dob };
+        data.dob = moment(dob, "YYYY/MM/DD");
         UserModel.create(data)
         .then(data => {
             res.send(data);
@@ -54,10 +58,12 @@ class UserController{
     
     static update = async (req, res) => {
         const id = req.params.id;
-        let data = { name, email , gender , dob } = req.body;
-
-        if(req.password){
-            data.password = bcrypt.hashSync(req.body.password, 8);
+        let { name, email , gender , dob } = req.body;
+        let data = { name, email , gender , dob };
+        data.dob = moment(dob, "YYYY/MM/DD");
+        
+        if(req.body.password){
+            data.password = req.body.password;
         }
 
         UserModel.update(data, {
