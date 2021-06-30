@@ -3,15 +3,19 @@ const UserModel = db.sequelize.models.User;
 const bcrypt = require('bcryptjs');
 const salt  = bcrypt.genSaltSync(10);
 const moment = require('moment');
+const { pageSize } = require('../config/var.config')
 
 class UserController{
 
     static list = async (req, res) => {
-        const {page,q} = req.body;
+        const {page} = req.body;
+        const offset = page * pageSize.user;
+        const limit = pageSize.user;
+
         UserModel.findAndCountAll(
             {
-                limit: 5,
-                offset: 0,
+                limit: limit,
+                offset: offset,
             }
         )
         .then(data => {
@@ -58,9 +62,11 @@ class UserController{
     
     static update = async (req, res) => {
         const id = req.params.id;
-        let { name, email , gender , dob } = req.body;
-        let data = { name, email , gender , dob };
-        data.dob = moment(dob, "YYYY/MM/DD");
+        // let { name , gender , dob } = req.body;
+        let data = {...req.body};
+        if(req.body.dob){
+            data.dob = moment(dob, "YYYY/MM/DD");
+        }
         
         if(req.body.password){
             data.password = req.body.password;

@@ -1,0 +1,118 @@
+@host = http://localhost:5000
+@ver = /api/v1
+@token_access = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTYyNTAzNTQ3NSwiZXhwIjoxNjI1MDM5MDc1fQ.JrPA4g0arAjvCet8Ig97aP1v-D5yZinhRjujdlxE8U4
+@id_user = 1
+
+### Test Server
+GET {{host}}{{ver}}/status HTTP/1.1
+
+##################
+# AuthController #
+##################
+
+### Register Account
+# @name: String
+# @email: String
+# @password: String
+# @gender: [Male,Female]
+# @dob: Date
+###
+
+POST {{host}}{{ver}}/auth/register HTTP/1.1
+Content-Type: application/json
+
+{
+    "name":"user",
+    "email":"user@user.com",
+    "password":"password",
+    "gender":"male",
+    "dob":"1995/01/01"
+}
+
+### Login Account
+# @email: String
+# @password: String
+###
+POST {{host}}{{ver}}/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "user@user.com",
+    "password": "password"
+}
+
+### Logout Account
+# @token: String
+###
+
+POST {{host}}{{ver}}/auth/logout HTTP/1.1
+Content-Type: application/json
+Authorization: {{token_access}}
+
+##################
+# UserController #
+##################
+
+### Get user list
+# @page: Number
+###
+
+GET  {{host}}{{ver}}/user HTTP/1.1
+Content-Type: application/json
+Authorization: {{token_access}}
+
+{
+    "page" : 0
+}
+
+### Get one user
+# @page: Number
+###
+
+GET  {{host}}{{ver}}/user/{{id_user}} HTTP/1.1
+Content-Type: application/json
+Authorization: {{token_access}}
+
+
+### Create one user
+# @name: String
+# @email: String
+# @password: String
+# @gender: String
+# @dob: Date
+###
+
+POST    {{host}}{{ver}}/user HTTP/1.1
+Content-Type: application/json
+Authorization: {{token_access}}
+
+{
+    "name":"user2",
+    "email":"user@user.com",
+    "password":"password",
+    "gender":"male",
+    "dob":"1995/01/01"
+}
+
+
+### Edit one user
+# @name: String
+# @password: String
+# @gender: String
+# @dob: Date
+###
+
+PATCH   {{host}}{{ver}}/user/{{id_user}} HTTP/1.1
+Content-Type: application/json
+Authorization: {{token_access}}
+
+{
+    "name": "new_user"
+}
+
+### Delete one user
+###
+
+DELETE {{host}}{{ver}}/user/{{id_user}} HTTP/1.1
+Content-Type: application/json
+Authorization: {{token_access}}

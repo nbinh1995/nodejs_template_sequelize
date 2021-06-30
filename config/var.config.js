@@ -15,3 +15,7 @@ exports.dataPayload = ({id})=>{
 }
 
 exports.pathTokenList = __dirname+'/tokenList.js'
+
+exports.pageSize = {
+    user: 5
+}

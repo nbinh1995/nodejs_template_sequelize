@@ -1,10 +1,9 @@
 const { Router } = require("express");
 const UserController = require("../../controllers/UserController");
-const checkJwtMiddleware = require('../../middlewares/checkJwtMiddleware');
 const router = Router();
 
 //Get all users
-router.get("/",checkJwtMiddleware, UserController.list);
+router.get("/", UserController.list);
 
 // Get one user
 router.get(

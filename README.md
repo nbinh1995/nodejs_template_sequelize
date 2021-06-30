@@ -1,0 +1,4 @@
+ - cp .env.example .env
+ - Edit .env
+ - npx sequelize-cli db:migrate
+ - npx sequelize-cli db:seed:all
