@@ -3,7 +3,7 @@ const UserModel = db.sequelize.models.User;
 const {statusAuth} = require('../config/var.config');
 const { generateJwtToken } = require('../config/jwt.config');
 const moment = require('moment');
-
+const {dataPayload} = require('../config/var.config');
 class AuthController {
 
     static login = async (req, res) => {
@@ -13,20 +13,20 @@ class AuthController {
         }
         const user = await UserModel.attempt({email,password});
         switch(user) {
-            case statusAuth[0]:
+            case statusAuth.FAIL_EMAIL:
                 return res.status(404).send({ message: "User Not found." });
             break;
-            case statusAuth[1]:
+            case statusAuth.FAIL_PASSWORD:
                 res.status(401).send({
                     accessToken: null,
                     message: "Invalid Password!"
                 });
             break;
             default:
-                let token = generateJwtToken({id:user.id});
+                let jwtPayload = dataPayload(user);
+                let token = generateJwtToken(jwtPayload);
                 return res.status(200).send({
                     success: true,
-                    data: user,
                     token: token,
                     message: "Successfully Login."
                 });
@@ -35,7 +35,9 @@ class AuthController {
     };
 
     static logout = async (req, res) => {
-        res.status(200).send({message: 'You are on the logout page'});
+        res.status(200).send({
+            success: true,
+            message: 'You are on the logout page'});
     };
 
     static register = async (req, res) => {

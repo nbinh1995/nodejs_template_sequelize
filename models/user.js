@@ -25,11 +25,11 @@ module.exports = (sequelize, DataTypes) => {
           if(passwordIsValid){
             return auth;
           }else{
-            return statusAuth[1];
+            return statusAuth.FAIL_PASSWORD;
           }
           
         }else{
-          return statusAuth[0];
+          return statusAuth.FAIL_EMAIL;
         }
     }
   };
