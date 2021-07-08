@@ -1,6 +1,6 @@
 @host = http://localhost:5000
 @ver = /api/v1
-@token_access = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTYyNTAzNTQ3NSwiZXhwIjoxNjI1MDM5MDc1fQ.JrPA4g0arAjvCet8Ig97aP1v-D5yZinhRjujdlxE8U4
+@token_access = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTYyNTA0MjY5NywiZXhwIjoxNjI1MDQ2Mjk3fQ.NXbkT94AmgooT8fEQ_YGCZSJiSapN2PGEJ5-NkUnVsM
 @id_user = 1
 
 ### Test Server
